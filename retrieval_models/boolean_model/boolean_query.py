@@ -10,9 +10,6 @@ class BooleanQuery(Query):
         # set the query data to super class    
         super().__init__(query)
 
-        # Tokenize query
-        query_tokens = self.word_tokenize(query)
-
         # set the query format to postfix to the model from infix format
         self.postfix_query = self.infix_to_postfix(query.split())
 
@@ -36,7 +33,7 @@ class BooleanQuery(Query):
 
 
     @staticmethod
-    def is_operator(self, token):
+    def is_operator(token):
         """ Returns true if operator """
         return token == "&" or token == "|"
 

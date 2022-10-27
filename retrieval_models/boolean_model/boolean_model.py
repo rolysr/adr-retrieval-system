@@ -1,4 +1,3 @@
-from xmlrpc.client import Boolean
 from base_models.retrieval_model import RetrievalModel
 from retrieval_models.boolean_model.boolean_query import BooleanQuery
 from retrieval_models.boolean_model.boolean_document import BooleanDocument
@@ -17,8 +16,8 @@ class BooleanModel(RetrievalModel):
     def parse_query(self, query):
         return BooleanQuery(query)
 
-    def parse_document(self, document):
-        return BooleanDocument(document.text)
+    def parse_document(self, document, vocab):
+        return BooleanDocument(document, vocab)
 
     def sim(self, document : BooleanDocument, query : BooleanQuery):
         """Evaluates the query against the corpus
@@ -48,10 +47,6 @@ class BooleanModel(RetrievalModel):
 
             # Token is an operand, push it to the stack
             else:
-                # Lowercasing and stemming query term
-                preprocessor = Preprocessor()
-                token = preprocessor.st.stem(token.lower())
-
                 # Push it's bit vector into operand stack
                 operands.push( (not document.bit_vector[token]) if token[0] == '~' else document.bit_vector[token])
 
