@@ -13,11 +13,25 @@ class BooleanModel(RetrievalModel):
         # get the corpus data
         super().__init__(corpus)
 
+        # set the corpus vocab
+        self.vocab = self.get_vocab()
+
+    def get_vocab(self):
+        """Get corpus vocab
+        :returns: set of all terms in corpus
+        """
+        vocab = set()
+        for doc in self.corpus:
+            terms = set(doc.text.split())
+            vocab.update(terms)
+        
+        return list(vocab)
+
     def parse_query(self, query):
         return BooleanQuery(query)
 
-    def parse_document(self, document, vocab):
-        return BooleanDocument(document, vocab)
+    def parse_document(self, document):
+        return BooleanDocument(document, self.vocab)
 
     def sim(self, document : BooleanDocument, query : BooleanQuery):
         """Evaluates the query against the corpus
@@ -48,7 +62,7 @@ class BooleanModel(RetrievalModel):
             # Token is an operand, push it to the stack
             else:
                 # Push it's bit vector into operand stack
-                operands.push( (not document.bit_vector[token]) if token[0] == '~' else document.bit_vector[token])
+                operands.push( ((not document.bit_vector[token]) if token[0] == '~' else document.bit_vector[token]) if token in document.bit_vector.keys() else False)
 
         if len(operands) != 1:
             print("Malformed query or postfix expression")
