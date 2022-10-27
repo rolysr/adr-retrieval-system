@@ -1,5 +1,7 @@
 # Importing dependancy libraries
 import os
+from sqlite3 import TimeFromTicks
+from turtle import title
 import pandas as pd
 import numpy as np
 import re
@@ -87,16 +89,21 @@ class Preprocessor:
 
         # extract text of a particular SGML <tag>
         textData = beautSoup.findAll(tag)
+        newTextData = []
 
-        # converting to string
-        textData = ''.join(map(str, textData))
-        # remove the SGML <tag> from text
-        textData = textData.replace(tag, '')
+        for tg in textData:
+            # converting to string
+            tg = ''.join(map(str, tg))
+            
+            # remove the SGML <tag> from text
+            tg = tg.replace(tag, '')
+            
+            # calling function to generate tokens from text
+            tg = self.tokenize(tg)
 
-        # calling function to generate tokens from text
-        textData = self.tokenize(textData)
+            newTextData.append(tg)
 
-        return textData
+        return newTextData
 
     def generate_preprocessed_documents(self):
         """Returns a list of documents
@@ -117,16 +124,18 @@ class Preprocessor:
                 soup = BeautifulSoup(fileData, 'html.parser')
 
                 # extract tokens for <title>
-                title = self.extractTokens(soup, 'title')
+                titles = self.extractTokens(soup, 'title')
 
                 # extract tokens for <text>
-                text = self.extractTokens(soup, 'text')
+                texts = self.extractTokens(soup, 'text')
 
-                # create Document object
-                document = Document(title + " " + text)
+                # create Document objects
+                for i in range(len(titles)):
+                    document = Document(titles[i] + " " + texts[i])
+                    
+                    # add document to the list of all documents
+                    documents.append(document)
 
-                # add document to the list of all documents
-                documents.append(document)
-            infile.close()
+                infile.close()
 
         return documents
