@@ -2,6 +2,8 @@ from collections import Counter
 from queries.query import Query
 import numpy as np
 
+from utils.preprocessor import Preprocessor
+
 class VectorSpaceQuery(Query):
     """
         Class that represents a Query type for Vector Space Model
@@ -26,22 +28,28 @@ class VectorSpaceQuery(Query):
         Returns:
             numpy.ndarray -- vector of tokens
         """
-        tokens = query.split()
+
+        # Preprocess query
+        preprocessor = Preprocessor()
+        new_query = preprocessor.tokenize(query)
+
+        tokens = new_query.split()
 
         Q = np.zeros((len(vocab)))
     
         counter = Counter(tokens)
-        max_freq = max([counter[token]])
+        max_freq = max([counter[token] for token in tokens])
         
         for token in np.unique(tokens):
             
             tf = counter[token]/max_freq
-            df = df[token] if token in vocab else 0
-            idf = np.log((no_of_docs+1)/(df+1))
+            df_value = df[token] if token in vocab else 0
+            idf = np.log((no_of_docs+1)/(df_value+1))
 
             try:
                 ind = vocab.index(token)
                 Q[ind] = (a + (1-a)*tf)*idf
             except:
                 pass
+
         return Q

@@ -30,8 +30,8 @@ class VectorSpaceModel(RetrievalModel):
         """
         df = {}
 
-        for i in range(corpus):
-            tokens = corpus[i].split()
+        for i in range(len(corpus)):
+            tokens = corpus[i].text.split()
             for w in tokens:
                 try:
                     # add token as key and doc number as value is chained
@@ -53,7 +53,8 @@ class VectorSpaceModel(RetrievalModel):
         return VectorSpaceDocument(document, len(self.corpus), self.df, self.vocab)
 
     def sim(self, document : VectorSpaceDocument, query : VectorSpaceQuery):
-        cos_sim = np.dot(document, query)/(np.linalg.norm(document)*np.linalg.norm(query))
+        d, q = document.document_vector, query.query_vector
+        cos_sim = np.dot(d, q)/(np.linalg.norm(d)*np.linalg.norm(q))
         return cos_sim
 
     

@@ -13,14 +13,14 @@ from documents.document import Document
 
 # nltk.download('stopwords')
 
-class DocumentsPreprocessor:
+class Preprocessor:
     """
         Class that represents a documents preprocessor object which tokenize, 
-        parse and output the given documents at ./datasets 
+        parse and output the given documents from ./dataset 
     """
 
     # Init document preprocessor
-    def __init__(self, in_path):
+    def __init__(self, in_path="./"):
         #The input and output data path
         self.in_path = in_path
 
@@ -123,7 +123,7 @@ class DocumentsPreprocessor:
                 text = self.extractTokens(soup, 'text')
 
                 # create Document object
-                document = Document(title, text)
+                document = Document(title + " " + text)
 
                 # add document to the list of all documents
                 documents.append(document)
