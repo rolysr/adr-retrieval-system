@@ -9,22 +9,23 @@ from collections import Counter
 from bs4 import BeautifulSoup
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
+from documents.document import Document
+
 # nltk.download('stopwords')
 
-class DocumentsPrepocessor:
+class DocumentsPreprocessor:
+    """
+        Class that represents a documents preprocessor object which tokenize, 
+        parse and output the given documents at ./datasets 
+    """
 
     # Init document preprocessor
-    def __init__(self, in_path, out_path):
+    def __init__(self, in_path):
         #The input and output data path
         self.in_path = in_path
-        self.out_path = out_path
 
         #stop list initialization
         self.stop_list = stopwords.words('english')
-
-        # Checking if the preprocessed docs folder exists already
-        if not os.path.isdir(self.out_path):
-            os.mkdir(self.out_path)
         
         # Getting all filenames from the docs folder
         self.filenames = os.listdir(self.in_path)  # To generate file path
@@ -97,33 +98,35 @@ class DocumentsPrepocessor:
 
         return textData
 
-    def generate_preprocessed_documents(self, ):
-        for fname in self.filenames:
+    def generate_preprocessed_documents(self):
+        """Returns a list of documents
+        Returns:
+            list(Document) -- list of documents
+        """
+        documents = list()
 
+        for fname in self.filenames:
             # generate filenames
             infilepath = self.in_path + '/' + fname
-            outfilepath = self.out_path + '/' + fname
 
             with open(infilepath) as infile:
-                with open(outfilepath, 'w') as outfile:
+                # read all text in a file
+                fileData = infile.read()
 
-                    # read all text in a file
-                    fileData = infile.read()
+                # creating BeautifulSoup object to extract text between SGML tags
+                soup = BeautifulSoup(fileData, 'html.parser')
 
-                    # creating BeautifulSoup object to extract text between SGML tags
-                    soup = BeautifulSoup(fileData, 'html.parser')
+                # extract tokens for <title>
+                title = self.extractTokens(soup, 'title')
 
-                    # extract tokens for <title>
-                    title = self.extractTokens(soup, 'title')
+                # extract tokens for <text>
+                text = self.extractTokens(soup, 'text')
 
-                    # extract tokens for <text>
-                    text = self.extractTokens(soup, 'text')
+                # create Document object
+                document = Document(title, text)
 
-                    # write tokens for <title> into new file
-                    outfile.write(title)
-                    outfile.write(" ")
-
-                    # write tokens for <text> into new file
-                    outfile.write(text)
-                outfile.close()
+                # add document to the list of all documents
+                documents.append(document)
             infile.close()
+
+        return documents
