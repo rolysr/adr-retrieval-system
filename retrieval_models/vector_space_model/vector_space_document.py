@@ -1,5 +1,5 @@
 from collections import Counter
-from documents.document import Document
+from base_models.document import Document
 import numpy as np
 
 class VectorSpaceDocument(Document):

@@ -9,7 +9,7 @@ from collections import Counter
 from bs4 import BeautifulSoup
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
-from documents.document import Document
+from base_models.document import Document
 
 # nltk.download('stopwords')
 

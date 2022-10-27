@@ -1,5 +1,5 @@
 from utils.preprocessor import Preprocessor
-from retrieval_models.vector_space_model import VectorSpaceModel
+from retrieval_models.vector_space_model.vector_space_model import VectorSpaceModel
 
 if __name__ == "__main__":
     dp = Preprocessor('./dataset')

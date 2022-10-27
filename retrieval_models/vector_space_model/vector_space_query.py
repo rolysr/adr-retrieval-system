@@ -1,5 +1,5 @@
 from collections import Counter
-from queries.query import Query
+from base_models.query import Query
 import numpy as np
 
 from utils.preprocessor import Preprocessor

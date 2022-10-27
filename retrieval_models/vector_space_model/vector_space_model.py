@@ -1,7 +1,7 @@
 from collections import Counter
-from documents.vector_space_document import VectorSpaceDocument
-from retrieval_models.retrieval_model import RetrievalModel
-from queries.vector_space_query import VectorSpaceQuery
+from retrieval_models.vector_space_model.vector_space_document import VectorSpaceDocument
+from base_models.retrieval_model import RetrievalModel
+from retrieval_models.vector_space_model.vector_space_query import VectorSpaceQuery
 import numpy as np
 
 class VectorSpaceModel(RetrievalModel):
