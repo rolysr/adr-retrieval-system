@@ -6,29 +6,31 @@ def classical_vector_feedback(documents_vectors, RR):
         This feedback can be used by any vector-based model
         for documents and queries
         Arguments:
-        documents_vectors {list{np.array}} -- list of all document vectors that where recovered
+        documents_vectors {list{(np.array, bool)}} -- list of all document vectors that where recovered and a bool that indicates if its relvant or not
         RR {int} -- number of relevant recovered documents
         Returns:
         np.array -- a new query vector that improves model's results
     """
 
     # result optimized query
-    query_opt = np.zeros(len(documents_vectors[0]))
+    query_opt = np.zeros(len(documents_vectors[0][0]))
     RI = len(documents_vectors) - RR
 
-    for doc_vector in documents_vectors:
-        query_opt = query_opt + doc_vector*(1/RR) + doc_vector*(1/RI)
+    for doc_vector, is_relevant in documents_vectors:
+        query_opt = query_opt + (doc_vector*(1/RR) if is_relevant else doc_vector*(1/RI))
 
     return query_opt
     
 
 def rocchio_algorithm(documents_vectors, q_zero, RR, alpha, beta, gamma):
     """
-        Return a classical vector feedback.
+        Rocchio feedback.
         This feedback can be used by any vector-based model
         for documents and queries
         Arguments:
-        documents_vectors {list{np.array}} -- list of all document vectors that where recovered
+        documents_vectors {list{(np.array, bool)}} -- list of all document vectors that where recovered and a bool that indicates if its relvant or not
+        q_zero {np.array} -- initial query vector
+        alpha, beta, gamma {float} -- parameters for measure relevance of q_zero, RR and RI values
         RR {int} -- number of relevant recovered documents
         Returns:
         np.array -- a new query vector that improves model's results
@@ -38,7 +40,7 @@ def rocchio_algorithm(documents_vectors, q_zero, RR, alpha, beta, gamma):
     query_opt = q_zero*alpha
     RI = len(documents_vectors) - RR
 
-    for doc_vector in documents_vectors:
-        query_opt = query_opt + doc_vector*(beta/RR) + doc_vector*(gamma/RI)
+    for doc_vector, is_relevant in documents_vectors:
+        query_opt = query_opt + (doc_vector*(beta/RR) if is_relevant else doc_vector*(gamma/RI)*(-1))
 
     return query_opt
