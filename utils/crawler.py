@@ -63,6 +63,16 @@ class Crawler:
         self.max_pages = max_pages
 
     def remove_between(self, document, start_str, end_str):
+        """
+            Remove elements between documents from an start string to
+            an end string
+            Arguments:
+            document {string} -- A document content
+            start_str {string} -- Start string content
+            end_str {strin} -- End string content
+            Results:
+            string -- Modified document string content
+        """
         while start_str in document and end_str in document:
             start_str_index = document.find(start_str)
             end_str_index = document.find(end_str, start_str_index) + len(end_str) - 1
@@ -70,6 +80,11 @@ class Crawler:
         return document
 
     def get_documents(self):
+        """
+            Navigate through the specified url and get a list of documents
+            Returns:
+            list(document) -- List of documens created by using web data
+        """
         pages_to_visit = [self.website_url]
         number_visited = 0
         documents = []
@@ -85,7 +100,11 @@ class Crawler:
                 data = self.remove_between(data, "<script>", "</script>")
                 data = self.remove_between(data, "<style>", "</style>")
                 data = self.remove_between(data, "<", ">")
+                
                 words = re.sub("[^\w]", " ",  data)
+                words = words.split()
+                words = ' '.join(words)
+
                 preprocessor = Preprocessor()
                 preprocessor.tokenize(words)
                 documents.append(Document(words))
