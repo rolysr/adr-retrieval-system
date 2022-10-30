@@ -22,7 +22,7 @@ def classical_vector_feedback(documents_vectors, RR):
     return query_opt
     
 
-def rocchio_algorithm(documents_vectors, q_zero, RR, alpha, beta, gamma):
+def rocchio_algorithm(documents_vectors, q_zero, RR, alpha=1.0, beta=0.75, gamma=0.15):
     """
         Rocchio feedback.
         This feedback can be used by any vector-based model
