@@ -11,7 +11,7 @@ class BooleanModel(RetrievalModel):
 
     def __init__(self, corpus):
         # get the corpus data
-        super().__init__(corpus)
+        super().__init__(corpus, name='BooleanModel')
 
         # set the corpus vocab
         self.vocab = self.get_vocab()

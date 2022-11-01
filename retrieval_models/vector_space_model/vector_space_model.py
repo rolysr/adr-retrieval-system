@@ -11,7 +11,7 @@ class VectorSpaceModel(RetrievalModel):
 
     def __init__(self, corpus) -> None:
         # get the corpus data
-        super().__init__(corpus)
+        super().__init__(corpus, name='VectorSpaceModel')
 
         # calculate df
         self.df = self.get_df(corpus)

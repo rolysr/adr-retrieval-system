@@ -14,3 +14,11 @@ class AdrRetrievalSystem(RetrievalSystem):
         models {list(RetrievalModel)} -- A list of retrieval models
         """
         super().__init__(corpus, models)
+
+    def query_model_name(query, model_name):
+        """
+        Receives a query and a model name and return the result of a query by 
+        using a model with the specified name
+        Arguments:
+        name = 
+        """

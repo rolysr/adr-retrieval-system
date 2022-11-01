@@ -4,13 +4,15 @@ class RetrievalModel:
         new information retrieval systems models
     """
 
-    def __init__(self, corpus):
+    def __init__(self, corpus, name=''):
         """
         Gets an instance of the corpus 
         Arguments:
             corpus {list(Document)} -- A corpus instance
+            name {string} -- A model identifier name 
         """     
         self.corpus = corpus 
+        self.name = name
 
     def parse_query(self, query):
         """
