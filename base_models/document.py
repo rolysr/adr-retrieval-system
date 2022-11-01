@@ -1,3 +1,5 @@
+import uuid
+
 class Document:
     """
         Class that represents an abstract document
@@ -8,4 +10,5 @@ class Document:
         Arguments:
             text {string} -- document main content
         """
+        self.id = uuid.uuid1()
         self.text = text
