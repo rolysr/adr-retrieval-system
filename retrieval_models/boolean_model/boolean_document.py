@@ -25,7 +25,6 @@ class BooleanDocument(Document):
 
         # document words
         doc_words = list(set(document.split()))
-        print(len(vocab))
         for word in vocab:
             bit_vector[word] = (word in doc_words)
 
