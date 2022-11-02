@@ -4,7 +4,7 @@ import numpy as np
 
 from utils.preprocessor import Preprocessor
 
-class VectorSpaceQuery(Query):
+class GeneralizedVectorSpaceQuery(Query):
     """
         Class that represents a Query type for Vector Space Model
     """
