@@ -2,7 +2,7 @@ from collections import Counter
 from base_models.document import Document
 import numpy as np
 
-class VectorSpaceDocument(Document):
+class GeneralizedVectorSpaceDocument(Document):
     """
         Class that represents a vector space document
     """

@@ -12,3 +12,7 @@ class Document:
         """
         self.id = uuid.uuid1()
         self.text = text
+
+    def __eq__(self,other):
+        
+        return self.id==other.id
