@@ -100,7 +100,7 @@ class Crawler:
                 data = self.remove_between(data, "<script>", "</script>")
                 data = self.remove_between(data, "<style>", "</style>")
                 data = self.remove_between(data, "<", ">")
-                
+
                 words = re.sub("[^\w]", " ",  data)
                 words = words.split()
                 words = ' '.join(words)
