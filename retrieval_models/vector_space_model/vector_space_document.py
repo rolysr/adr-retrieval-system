@@ -46,7 +46,7 @@ class VectorSpaceDocument(Document):
             # retrieving df values from DF dictionary
             df_value = df[token] if token in vocab else 0
             
-            idf = np.log((corpus_len)/(df_value))
+            idf = np.log((corpus_len+1)/(df_value+1))
             
             D[token_index] = tf*idf
             token_index += 1

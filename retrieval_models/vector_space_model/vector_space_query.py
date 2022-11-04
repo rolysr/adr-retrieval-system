@@ -44,7 +44,7 @@ class VectorSpaceQuery(Query):
             
             tf = counter[token]/max_freq
             df_value = df[token] if token in vocab else 0
-            idf = np.log((no_of_docs)/(df_value))
+            idf = np.log((no_of_docs+1)/(df_value+1))
 
             try:
                 ind = vocab.index(token)

@@ -12,7 +12,7 @@ class GeneralizedVectorSpaceModel(RetrievalModel):
 
     def __init__(self, corpus) -> None:
         # get the corpus data
-        super().__init__(corpus, name='VectorSpaceModel')
+        super().__init__(corpus, name='GeneralizedVectorSpaceModel')
 
         # calculate df
         self.df = self.get_df(corpus)
@@ -22,9 +22,9 @@ class GeneralizedVectorSpaceModel(RetrievalModel):
 
         self.wij = self.get_wij(corpus)
 
-        self.ki = get_ki(corpus)
+        self.ki = self.get_ki(corpus)
  
-    def get_ki(self,corpus,d)
+    def get_ki(self,corpus,d):
         """
         Create a dictionary of key-value pairs where tokens 
         are keys and Ki are the value
@@ -53,11 +53,11 @@ class GeneralizedVectorSpaceModel(RetrievalModel):
         return ki
 
 
-    def calculate_cir(self,dictionary_mr,mr,index)
+    def calculate_cir(self,dictionary_mr,mr,index):
         """
         Calculate Ci,r if gl(dj)==gl(Mr) for all l
         """
-        for i in range(len(corpus)):
+        for i in range(len(self.corpus)):
             cir = 0
             if dictionary_mr[i] == mr:
                 cir = cir + self.wij[i][index]
