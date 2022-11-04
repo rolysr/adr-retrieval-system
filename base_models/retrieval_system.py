@@ -36,6 +36,7 @@ class RetrievalSystem:
             d = model.parse_document(document.text) # document
             q = model.parse_query(query) # query
             similarity = model.sim(d, q)
-            query_response.append((document, similarity))
-
+            query_response.append((similarity, document))
+        
+        query_response.sort()
         return query_response

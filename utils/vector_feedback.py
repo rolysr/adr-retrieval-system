@@ -37,7 +37,7 @@ def rocchio_algorithm(documents_vectors, q_zero, RR, alpha=1.0, beta=0.75, gamma
     """
 
     # result optimized query
-    query_opt = q_zero*alpha
+    query_opt = q_zero.query_vector*alpha
     RI = len(documents_vectors) - RR
 
     for doc_vector, is_relevant in documents_vectors:
