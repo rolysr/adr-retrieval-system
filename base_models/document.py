@@ -13,6 +13,20 @@ class Document:
         self.id = uuid.uuid1()
         self.text = text
 
-    def __eq__(self,other):
-        
+    def __eq__(self, other):
         return self.id==other.id
+    
+    def __gt__(self, other):
+        return self.id > other.id
+
+    def __lt__(self, other):
+        return self.id < other.id
+
+    def __ge__(self, other):
+        return self.id >= other.id
+
+    def __le__(self, other):
+        return self.id <= other.id
+
+    def __str__(self) -> str:
+        return self.id.int
