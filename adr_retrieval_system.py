@@ -1,4 +1,4 @@
-from base_models import RetrievalSystem
+from base_models.retrieval_system import RetrievalSystem
 from utils.crawler import Crawler
 from utils.query_expansion import query_expansion_by_synonyms
 from utils.vector_feedback import classical_vector_feedback, rocchio_algorithm

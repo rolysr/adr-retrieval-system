@@ -11,7 +11,7 @@ class RetrievalSystem:
             The class constructor
             Arguments:
             corpus list(document): A list of all documents from the corpus
-            models list(retrieva_model): A list of retrievall models 
+            models list(retrieval_model): A list of retrievall models 
             that will be used by the system
         """
         # set main fields
@@ -39,4 +39,5 @@ class RetrievalSystem:
             query_response.append((similarity, document))
         
         query_response.sort()
+        query_response.reverse()
         return query_response
