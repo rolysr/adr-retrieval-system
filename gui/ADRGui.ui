@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1100</width>
-    <height>711</height>
+    <width>1092</width>
+    <height>684</height>
    </rect>
   </property>
   <property name="font">
@@ -115,10 +115,10 @@
     <widget class="QGroupBox" name="groupBox_2">
      <property name="geometry">
       <rect>
-       <x>730</x>
-       <y>110</y>
-       <width>291</width>
-       <height>141</height>
+       <x>790</x>
+       <y>260</y>
+       <width>251</width>
+       <height>331</height>
       </rect>
      </property>
      <property name="font">
@@ -153,27 +153,128 @@
        <string>Expand Query</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkBox_2">
+     <widget class="QGroupBox" name="groupBox_9">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>90</y>
-        <width>191</width>
-        <height>31</height>
+        <x>10</x>
+        <y>80</y>
+        <width>231</width>
+        <height>231</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
         <pointsize>12</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-        <underline>false</underline>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
-      <property name="text">
-       <string>Add Crawler Data</string>
+      <property name="title">
+       <string>Crawling</string>
       </property>
+      <widget class="QLineEdit" name="lineEdit_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>211</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <weight>50</weight>
+         <bold>false</bold>
+         <underline>false</underline>
+        </font>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_11">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>101</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>11</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+         <underline>false</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Website Url:</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="spinBox_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>130</y>
+         <width>51</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Microsoft Sans Serif</family>
+         <pointsize>9</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+         <underline>false</underline>
+        </font>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_12">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>100</y>
+         <width>181</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>11</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+         <underline>false</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Search Deep Pages:</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_4">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>170</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+         <underline>false</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Add Data</string>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_3">
@@ -481,8 +582,8 @@
     <widget class="QGroupBox" name="groupBox_7">
      <property name="geometry">
       <rect>
-       <x>790</x>
-       <y>260</y>
+       <x>730</x>
+       <y>110</y>
        <width>231</width>
        <height>151</height>
       </rect>
