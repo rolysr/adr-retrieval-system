@@ -10,9 +10,10 @@ def run_adr_system_test():
     # Create instances of vector space model and boolean model
     bm = BooleanModel(corpus)
     vsm = VectorSpaceModel(corpus)
+    gvsm = GeneralizedVectorSpaceModel(corpus)
 
     # Create an instance of ADR Retrieval System
-    adr = AdrRetrievalSystem(corpus, [bm, vsm])
+    adr = AdrRetrievalSystem(corpus, [bm, vsm,gvsm])
 
     # Test basic query using vsm
     query = "A wing is good"
@@ -28,15 +29,27 @@ def run_adr_system_test():
     print(len(query_response))
     print(query_response[0:20])
 
-    # Test query by model name
+    # Test query by model name (vsm)
     query = "A wing is good"
     query_response = adr.query_model_name(query, "VectorSpaceModel")
 
     print(len(query_response))
     print(query_response[0])
 
-    # Test query k items on the response
+    # Test query k items on the response (vsm)
     query = "A wing is good"
     query_response = adr.k_documents_query_model(query, "VectorSpaceModel")
+
+    # Test query by model name (gvsm)
+    query = "A wing is good"
+    query_response = adr.query_model_name(query, "GeneralizedVectorSpaceModel")
+
+    print(len(query_response))
+    print(query_response[0])
+
+    # Test query k items on the response (gvsm)
+    query = "A wing is good"
+    query_response = adr.k_documents_query_model(query, "GeneralizedVectorSpaceModel")
+
 
     print(query_response)
