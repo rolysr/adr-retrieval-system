@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>833</width>
+    <width>1259</width>
     <height>697</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1259</width>
+    <height>697</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1259</width>
+    <height>697</height>
+   </size>
   </property>
   <property name="font">
    <font>
@@ -22,19 +34,19 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="ADRGroupBox">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>20</y>
-      <width>791</width>
+      <width>1221</width>
       <height>641</height>
      </rect>
     </property>
     <property name="title">
      <string>ADR Information Recovery System</string>
     </property>
-    <widget class="QLineEdit" name="lineEdit">
+    <widget class="QLineEdit" name="searchBar">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -56,7 +68,7 @@
       <string/>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="searchButton">
      <property name="geometry">
       <rect>
        <x>560</x>
@@ -78,45 +90,11 @@
       <string>Search</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QGroupBox" name="responseSizeGroupBox">
      <property name="geometry">
       <rect>
-       <x>450</x>
-       <y>120</y>
-       <width>331</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>12</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-       <underline>false</underline>
-      </font>
-     </property>
-     <item>
-      <property name="text">
-       <string>Vector Space Model</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Boolean Model</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Generalized Vector Space Model</string>
-      </property>
-     </item>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="geometry">
-      <rect>
-       <x>450</x>
-       <y>170</y>
+       <x>440</x>
+       <y>240</y>
        <width>171</width>
        <height>71</height>
       </rect>
@@ -131,10 +109,10 @@
      <property name="title">
       <string>Response Size</string>
      </property>
-     <widget class="QSpinBox" name="spinBox">
+     <widget class="QSpinBox" name="noDocsSpinBox">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>110</x>
         <y>40</y>
         <width>51</width>
         <height>21</height>
@@ -150,8 +128,29 @@
        </font>
       </property>
      </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>40</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>No. Docs:</string>
+      </property>
+     </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_4">
+    <widget class="QGroupBox" name="searchResultsGroupBox">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -163,7 +162,7 @@
      <property name="title">
       <string>Search Results</string>
      </property>
-     <widget class="QTableWidget" name="tableWidget">
+     <widget class="QTableWidget" name="searchResultsTable">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -189,11 +188,11 @@
       </column>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_5">
+    <widget class="QGroupBox" name="responseTimeGroupBox">
      <property name="geometry">
       <rect>
-       <x>450</x>
-       <y>260</y>
+       <x>620</x>
+       <y>240</y>
        <width>171</width>
        <height>71</height>
       </rect>
@@ -208,7 +207,7 @@
      <property name="title">
       <string>Response Time</string>
      </property>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="responseTimeLabel">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -229,6 +228,653 @@
        <string>0 secs</string>
       </property>
      </widget>
+    </widget>
+    <widget class="QGroupBox" name="modelGroupBox">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>110</y>
+       <width>351</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Model</string>
+     </property>
+     <widget class="QComboBox" name="modelComboBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>331</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <item>
+       <property name="text">
+        <string>Vector Space Model</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Boolean Model</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Generalized Vector Space Model</string>
+       </property>
+      </item>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="datasetGroupBox">
+     <property name="geometry">
+      <rect>
+       <x>810</x>
+       <y>110</y>
+       <width>391</width>
+       <height>261</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Datasets</string>
+     </property>
+     <widget class="QComboBox" name="offlineDatasetsComboBox">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>70</y>
+        <width>201</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <item>
+       <property name="text">
+        <string>Cranfield</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Reuters</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>20-Newsgroups</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QRadioButton" name="offlineRadioButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>70</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Offline</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="onlineRadioButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>130</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Online</string>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="crawlerGroupBox">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>130</y>
+        <width>271</width>
+        <height>121</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="title">
+       <string>Crawler</string>
+      </property>
+      <widget class="QLineEdit" name="urlCrawlerLineEdit">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>40</y>
+         <width>211</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+         <underline>false</underline>
+        </font>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>31</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Calibri</family>
+         <weight>50</weight>
+         <bold>false</bold>
+         <underline>false</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Url:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>80</y>
+         <width>91</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Calibri</family>
+         <weight>50</weight>
+         <bold>false</bold>
+         <underline>false</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>No. Pages:</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="noPagesCrawlerSpinBox">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>90</y>
+         <width>51</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Microsoft Sans Serif</family>
+         <pointsize>9</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+         <underline>false</underline>
+        </font>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="feedbackGroupBox">
+     <property name="geometry">
+      <rect>
+       <x>810</x>
+       <y>380</y>
+       <width>181</width>
+       <height>161</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Feedback</string>
+     </property>
+     <widget class="QPushButton" name="feedbackButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>161</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Apply Feedback</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="classicalRadioButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>80</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Classical</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="rocchioRadioButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>120</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Rocchio</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="metricsGroupBox">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>320</y>
+       <width>351</width>
+       <height>261</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Metrics</string>
+     </property>
+     <widget class="QPushButton" name="metricsButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>161</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Calculate Metrics</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="precisionLabel">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>90</y>
+        <width>121</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Precision:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="recallLabel">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>120</y>
+        <width>121</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Recall:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="fscoreLabel">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>150</y>
+        <width>121</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>F-Score:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="f1scoreLabel">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>180</y>
+        <width>121</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>F1-Score:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="rprecisionLabel">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>210</y>
+        <width>121</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>R-Precision:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_10">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>90</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>RR:</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="RRSpinBox">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>90</y>
+        <width>51</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft Sans Serif</family>
+        <pointsize>9</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_11">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>130</y>
+        <width>41</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>REC:</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="RECSpinBox">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>130</y>
+        <width>51</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft Sans Serif</family>
+        <pointsize>9</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>170</y>
+        <width>41</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>REL:</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="RELSpinBox">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>170</y>
+        <width>51</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft Sans Serif</family>
+        <pointsize>9</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_13">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>210</y>
+        <width>41</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>RRD:</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="RRDSpinBox">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>210</y>
+        <width>51</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft Sans Serif</family>
+        <pointsize>9</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QPushButton" name="expandQueryButton">
+     <property name="geometry">
+      <rect>
+       <x>680</x>
+       <y>70</y>
+       <width>161</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="text">
+      <string>Expand Query</string>
+     </property>
     </widget>
    </widget>
   </widget>

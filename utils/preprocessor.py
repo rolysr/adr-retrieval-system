@@ -132,7 +132,7 @@ class Preprocessor:
 
                 # create Document objects
                 for i in range(len(titles)):
-                    document = Document(titles[i] + " " + texts[i])
+                    document = Document(titles[i] + " " + texts[i], self.in_path)
                     
                     # add document to the list of all documents
                     documents.append(document)

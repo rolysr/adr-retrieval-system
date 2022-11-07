@@ -2,7 +2,7 @@ from retrieval_models.boolean_model.boolean_model import *
 
 def run_boolean_model_test():
     # Init preprocessor
-    preprocessor = Preprocessor('./datasets')
+    preprocessor = Preprocessor('./datasets/cranfield')
 
     # Get all corpus
     corpus = preprocessor.generate_preprocessed_documents()

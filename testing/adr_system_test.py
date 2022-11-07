@@ -2,10 +2,11 @@ from adr_retrieval_system import AdrRetrievalSystem
 from utils.preprocessor import Preprocessor
 from retrieval_models.boolean_model.boolean_model import BooleanModel
 from retrieval_models.vector_space_model.vector_space_model import VectorSpaceModel
+from retrieval_models.generalized_vector_space_model.generalized_vector_space_model import GeneralizedVectorSpaceModel
 
 def run_adr_system_test():
     # Generate corpus
-    corpus = Preprocessor('./datasets').generate_preprocessed_documents()
+    corpus = Preprocessor('./datasets/cranfield').generate_preprocessed_documents()
 
     # Create instances of vector space model and boolean model
     bm = BooleanModel(corpus)
