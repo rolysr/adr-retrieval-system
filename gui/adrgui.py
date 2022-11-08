@@ -15,6 +15,7 @@ from retrieval_models.generalized_vector_space_model.generalized_vector_space_mo
 from retrieval_models.vector_space_model.vector_space_model import VectorSpaceModel
 from utils.crawler import Crawler
 from utils.preprocessor import Preprocessor
+from utils.query_expansion import query_expansion_by_synonyms
 
 
 class Ui_MainWindow(object):
@@ -65,7 +66,6 @@ class Ui_MainWindow(object):
         self.responseSizeGroupBox.setObjectName("responseSizeGroupBox")
         self.noDocsSpinBox = QtWidgets.QSpinBox(self.responseSizeGroupBox)
         self.noDocsSpinBox.setGeometry(QtCore.QRect(110, 40, 51, 21))
-        self.noDocsSpinBox.setMinimum(1)
         font = QtGui.QFont()
         font.setFamily("Microsoft Sans Serif")
         font.setPointSize(9)
@@ -207,7 +207,6 @@ class Ui_MainWindow(object):
         self.label_3.setObjectName("label_3")
         self.noPagesCrawlerSpinBox = QtWidgets.QSpinBox(self.crawlerGroupBox)
         self.noPagesCrawlerSpinBox.setGeometry(QtCore.QRect(110, 90, 51, 21))
-        self.noPagesCrawlerSpinBox.setMinimum(1)
         font = QtGui.QFont()
         font.setFamily("Microsoft Sans Serif")
         font.setPointSize(9)
@@ -216,42 +215,6 @@ class Ui_MainWindow(object):
         font.setWeight(50)
         self.noPagesCrawlerSpinBox.setFont(font)
         self.noPagesCrawlerSpinBox.setObjectName("noPagesCrawlerSpinBox")
-        self.feedbackGroupBox = QtWidgets.QGroupBox(self.ADRGroupBox)
-        self.feedbackGroupBox.setGeometry(QtCore.QRect(810, 380, 181, 161))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.feedbackGroupBox.setFont(font)
-        self.feedbackGroupBox.setObjectName("feedbackGroupBox")
-        self.feedbackButton = QtWidgets.QPushButton(self.feedbackGroupBox)
-        self.feedbackButton.setGeometry(QtCore.QRect(10, 30, 161, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.feedbackButton.setFont(font)
-        self.feedbackButton.setObjectName("feedbackButton")
-        self.classicalRadioButton = QtWidgets.QRadioButton(self.feedbackGroupBox)
-        self.classicalRadioButton.setGeometry(QtCore.QRect(20, 80, 111, 31))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.classicalRadioButton.setFont(font)
-        self.classicalRadioButton.setObjectName("classicalRadioButton")
-        self.rocchioRadioButton = QtWidgets.QRadioButton(self.feedbackGroupBox)
-        self.rocchioRadioButton.setGeometry(QtCore.QRect(20, 120, 111, 31))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setBold(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        self.rocchioRadioButton.setFont(font)
-        self.rocchioRadioButton.setObjectName("rocchioRadioButton")
         self.metricsGroupBox = QtWidgets.QGroupBox(self.ADRGroupBox)
         self.metricsGroupBox.setGeometry(QtCore.QRect(440, 320, 351, 281))
         font = QtGui.QFont()
@@ -400,16 +363,30 @@ class Ui_MainWindow(object):
         font.setWeight(50)
         self.noveltyRatioLabel.setFont(font)
         self.noveltyRatioLabel.setObjectName("noveltyRatioLabel")
-        self.expandQueryButton = QtWidgets.QPushButton(self.ADRGroupBox)
-        self.expandQueryButton.setGeometry(QtCore.QRect(680, 70, 161, 31))
+        self.queryExpansionGroupBox = QtWidgets.QGroupBox(self.ADRGroupBox)
+        self.queryExpansionGroupBox.setGeometry(QtCore.QRect(810, 370, 381, 151))
+        self.queryExpansionGroupBox.setObjectName("queryExpansionGroupBox")
+        self.getBetterQueryButton = QtWidgets.QPushButton(self.queryExpansionGroupBox)
+        self.getBetterQueryButton.setGeometry(QtCore.QRect(10, 50, 181, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         font.setBold(False)
         font.setUnderline(False)
         font.setWeight(50)
-        self.expandQueryButton.setFont(font)
-        self.expandQueryButton.setObjectName("expandQueryButton")
+        self.getBetterQueryButton.setFont(font)
+        self.getBetterQueryButton.setObjectName("getBetterQueryButton")
+        self.queryExpandedLineEdit = QtWidgets.QLineEdit(self.queryExpansionGroupBox)
+        self.queryExpandedLineEdit.setGeometry(QtCore.QRect(10, 100, 361, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.queryExpandedLineEdit.setFont(font)
+        self.queryExpandedLineEdit.setText("")
+        self.queryExpandedLineEdit.setObjectName("queryExpandedLineEdit")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -447,10 +424,6 @@ class Ui_MainWindow(object):
         self.crawlerGroupBox.setTitle(_translate("MainWindow", "Crawler"))
         self.label_2.setText(_translate("MainWindow", "Url:"))
         self.label_3.setText(_translate("MainWindow", "No. Pages:"))
-        self.feedbackGroupBox.setTitle(_translate("MainWindow", "Feedback"))
-        self.feedbackButton.setText(_translate("MainWindow", "Apply Feedback"))
-        self.classicalRadioButton.setText(_translate("MainWindow", "Classical"))
-        self.rocchioRadioButton.setText(_translate("MainWindow", "Rocchio"))
         self.metricsGroupBox.setTitle(_translate("MainWindow", "Metrics"))
         self.metricsButton.setText(_translate("MainWindow", "Calculate Metrics"))
         self.precisionLabel.setText(_translate("MainWindow", "Precision:"))
@@ -463,13 +436,17 @@ class Ui_MainWindow(object):
         self.label_12.setText(_translate("MainWindow", "REL:"))
         self.label_13.setText(_translate("MainWindow", "RRD:"))
         self.noveltyRatioLabel.setText(_translate("MainWindow", "Novelty Ratio:"))
-        self.expandQueryButton.setText(_translate("MainWindow", "Expand Query"))
+        self.queryExpansionGroupBox.setTitle(_translate("MainWindow", "Query Expansion"))
+        self.getBetterQueryButton.setText(_translate("MainWindow", "Get Better Query"))
+
+        # set min value to 1 in docs and pages spin boxes
+        self.noDocsSpinBox.setMinimum(1)
+        self.noPagesCrawlerSpinBox.setMinimum(1)
 
         # connect button's click event to the correspondig function
         self.searchButton.clicked.connect(self.search_button)
         self.metricsButton.clicked.connect(self.calculate_metrics_button)
-        self.feedbackButton.clicked.connect(self.apply_feedback_button)
-        self.expandQueryButton.clicked.connect(self.expand_query_button)
+        self.getBetterQueryButton.clicked.connect(self.expand_query_button)
 
     def init_backend(self):
         """
@@ -563,7 +540,6 @@ class Ui_MainWindow(object):
             query_response = adr_system.k_documents_query_model(query_string, model_name, number_of_documents_to_retrieve)
             self.searchResultsTable.setRowCount(len(query_response))
             self.searchResultsTable.setColumnCount(3)
-
             # put the results on the search table and show elapsed time response
             for index in range(number_of_documents_to_retrieve):
                 self.searchResultsTable.setItem(index, 0, QtWidgets.QTableWidgetItem(str(query_response[index][1].id))) # set id
@@ -588,30 +564,20 @@ class Ui_MainWindow(object):
         self.set_enable_main_window(False)
 
         # check if search query is valid
+        query_string = self.searchBar.text()
+        if query_string == '':
+            QtWidgets.QMessageBox.about(self.searchButton, 'Invalid Query String', 'Invalid query string, cannot be empty')
+            self.set_enable_main_window(True)
+            return
 
         # generate the expanded query string given an initial query string
+        new_words = query_expansion_by_synonyms(query_string)
+        for word in new_words: # add new words to the query
+            query_string = query_string + ' ' + word
 
-        # place the generated expanded query on search bar
-
-        # at the end of the end of the method make buttons enable to users
-        self.set_enable_main_window(True)
-
-    def apply_feedback_button(self):
-        """
-            With this method, in case you are using a vector-space-based
-            model, you can execute a search query using a better query
-            vector which gives better metric results
-        """
-        # set other buttons as not enable
-        self.set_enable_main_window(False)
-
-        # check the enabled feedback technique, there must be just one selected method
-
-        # check if selected dataset is valid
-
-        # check if selcted model is valid
-
-        # make query with new query vector and put results on search table
+        # set new query string into line edit recommendation
+        self.queryExpandedLineEdit.clear()
+        self.queryExpandedLineEdit.setText(query_string)
 
         # at the end of the end of the method make buttons enable to users
         self.set_enable_main_window(True)
@@ -676,7 +642,6 @@ class Ui_MainWindow(object):
         """
         self.offlineRadioButton.setChecked(False)
         self.onlineRadioButton.setChecked(False)
-
 
 # if __name__ == "__main__":
 #     import sys

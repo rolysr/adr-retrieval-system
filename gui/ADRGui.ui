@@ -463,90 +463,6 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="feedbackGroupBox">
-     <property name="geometry">
-      <rect>
-       <x>810</x>
-       <y>380</y>
-       <width>181</width>
-       <height>161</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="title">
-      <string>Feedback</string>
-     </property>
-     <widget class="QPushButton" name="feedbackButton">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>161</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>12</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-        <underline>false</underline>
-       </font>
-      </property>
-      <property name="text">
-       <string>Apply Feedback</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="classicalRadioButton">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>80</y>
-        <width>111</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-        <underline>false</underline>
-       </font>
-      </property>
-      <property name="text">
-       <string>Classical</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="rocchioRadioButton">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>120</y>
-        <width>111</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-        <underline>false</underline>
-       </font>
-      </property>
-      <property name="text">
-       <string>Rocchio</string>
-      </property>
-     </widget>
-    </widget>
     <widget class="QGroupBox" name="metricsGroupBox">
      <property name="geometry">
       <rect>
@@ -875,27 +791,62 @@
       </property>
      </widget>
     </widget>
-    <widget class="QPushButton" name="expandQueryButton">
+    <widget class="QGroupBox" name="queryExpansionGroupBox">
      <property name="geometry">
       <rect>
-       <x>680</x>
-       <y>70</y>
-       <width>161</width>
-       <height>31</height>
+       <x>810</x>
+       <y>370</y>
+       <width>381</width>
+       <height>151</height>
       </rect>
      </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>12</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-       <underline>false</underline>
-      </font>
+     <property name="title">
+      <string>Query Expansion</string>
      </property>
-     <property name="text">
-      <string>Expand Query</string>
-     </property>
+     <widget class="QPushButton" name="getBetterQueryButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>181</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Get Better Query</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="queryExpandedLineEdit">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>361</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>
