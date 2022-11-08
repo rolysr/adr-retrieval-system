@@ -9,6 +9,12 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from adr_retrieval_system import AdrRetrievalSystem
+from retrieval_models.boolean_model.boolean_model import BooleanModel
+from retrieval_models.generalized_vector_space_model.generalized_vector_space_model import GeneralizedVectorSpaceModel
+from retrieval_models.vector_space_model.vector_space_model import VectorSpaceModel
+
+from utils.preprocessor import Preprocessor
 
 
 class Ui_MainWindow(object):
@@ -238,7 +244,7 @@ class Ui_MainWindow(object):
         self.rocchioRadioButton.setFont(font)
         self.rocchioRadioButton.setObjectName("rocchioRadioButton")
         self.metricsGroupBox = QtWidgets.QGroupBox(self.ADRGroupBox)
-        self.metricsGroupBox.setGeometry(QtCore.QRect(440, 320, 351, 261))
+        self.metricsGroupBox.setGeometry(QtCore.QRect(440, 320, 351, 281))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setBold(True)
@@ -256,7 +262,7 @@ class Ui_MainWindow(object):
         self.metricsButton.setFont(font)
         self.metricsButton.setObjectName("metricsButton")
         self.precisionLabel = QtWidgets.QLabel(self.metricsGroupBox)
-        self.precisionLabel.setGeometry(QtCore.QRect(170, 90, 121, 16))
+        self.precisionLabel.setGeometry(QtCore.QRect(170, 90, 171, 31))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setBold(False)
@@ -265,7 +271,7 @@ class Ui_MainWindow(object):
         self.precisionLabel.setFont(font)
         self.precisionLabel.setObjectName("precisionLabel")
         self.recallLabel = QtWidgets.QLabel(self.metricsGroupBox)
-        self.recallLabel.setGeometry(QtCore.QRect(170, 120, 121, 16))
+        self.recallLabel.setGeometry(QtCore.QRect(170, 120, 171, 31))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setBold(False)
@@ -274,7 +280,7 @@ class Ui_MainWindow(object):
         self.recallLabel.setFont(font)
         self.recallLabel.setObjectName("recallLabel")
         self.fscoreLabel = QtWidgets.QLabel(self.metricsGroupBox)
-        self.fscoreLabel.setGeometry(QtCore.QRect(170, 150, 121, 16))
+        self.fscoreLabel.setGeometry(QtCore.QRect(170, 150, 171, 31))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setBold(False)
@@ -283,7 +289,7 @@ class Ui_MainWindow(object):
         self.fscoreLabel.setFont(font)
         self.fscoreLabel.setObjectName("fscoreLabel")
         self.f1scoreLabel = QtWidgets.QLabel(self.metricsGroupBox)
-        self.f1scoreLabel.setGeometry(QtCore.QRect(170, 180, 121, 16))
+        self.f1scoreLabel.setGeometry(QtCore.QRect(170, 180, 171, 31))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setBold(False)
@@ -292,7 +298,7 @@ class Ui_MainWindow(object):
         self.f1scoreLabel.setFont(font)
         self.f1scoreLabel.setObjectName("f1scoreLabel")
         self.rprecisionLabel = QtWidgets.QLabel(self.metricsGroupBox)
-        self.rprecisionLabel.setGeometry(QtCore.QRect(170, 210, 121, 16))
+        self.rprecisionLabel.setGeometry(QtCore.QRect(170, 210, 171, 31))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setBold(False)
@@ -376,6 +382,15 @@ class Ui_MainWindow(object):
         font.setWeight(50)
         self.RRDSpinBox.setFont(font)
         self.RRDSpinBox.setObjectName("RRDSpinBox")
+        self.noveltyRatioLabel = QtWidgets.QLabel(self.metricsGroupBox)
+        self.noveltyRatioLabel.setGeometry(QtCore.QRect(170, 240, 171, 31))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.noveltyRatioLabel.setFont(font)
+        self.noveltyRatioLabel.setObjectName("noveltyRatioLabel")
         self.expandQueryButton = QtWidgets.QPushButton(self.ADRGroupBox)
         self.expandQueryButton.setGeometry(QtCore.QRect(680, 70, 161, 31))
         font = QtGui.QFont()
@@ -438,14 +453,155 @@ class Ui_MainWindow(object):
         self.label_11.setText(_translate("MainWindow", "REC:"))
         self.label_12.setText(_translate("MainWindow", "REL:"))
         self.label_13.setText(_translate("MainWindow", "RRD:"))
+        self.noveltyRatioLabel.setText(_translate("MainWindow", "Novelty Ratio:"))
         self.expandQueryButton.setText(_translate("MainWindow", "Expand Query"))
 
+        # connect button's click event to the correspondig function
+        self.searchButton.clicked.connect(self.search_button)
+        self.metricsButton.clicked.connect(self.calculate_metrics_button)
+        self.feedbackButton.clicked.connect(self.apply_feedback_button)
+        self.expandQueryButton.clicked.connect(self.expand_query_button)
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+    def init_backend(self):
+        """
+            This method creates instances of ADR systems in order to use
+            the Gui. This method is supposed to be called before Main Window shows
+            on screen
+        """
+        # get all offline corpuses
+        cranfield_corpus = Preprocessor("./datasets/cranfield").generate_preprocessed_documents()
+        reuters_corpus = Preprocessor("./datasets/reuters").generate_preprocessed_documents()
+        newsgroups_corpus = Preprocessor("./datasets/20newsgroups").generate_preprocessed_documents()
+
+        # initialize all models for each corpus and an ADR system
+        # cranfield
+        bm_cranfield = BooleanModel(cranfield_corpus)
+        vsm_cranfield = VectorSpaceModel(cranfield_corpus)
+        # gvsm_cranfield = GeneralizedVectorSpaceModel(cranfield_corpus)
+        # cranfield adr
+        self.cranfield_adr = AdrRetrievalSystem(cranfield_corpus, models=[bm_cranfield, vsm_cranfield])
+
+        # reuters
+        bm_reuters = BooleanModel(reuters_corpus)
+        vsm_reuters = VectorSpaceModel(reuters_corpus)
+        # gvsm_reuters = GeneralizedVectorSpaceModel(reuters_corpus)
+        # reuters adr
+        self.reuters_adr = AdrRetrievalSystem(reuters_corpus, models=[bm_reuters, vsm_reuters])
+
+        # newsgroups
+        bm_newsgroups = BooleanModel(newsgroups_corpus)
+        vsm_newsgroups = VectorSpaceModel(newsgroups_corpus)
+        # gvsm_newsgroups = GeneralizedVectorSpaceModel(newsgroups_corpus)
+        # newsgroups adr
+        self.newsgroups_adr = AdrRetrievalSystem(newsgroups_corpus, models=[bm_newsgroups, vsm_newsgroups])
+
+    def search_button(self):
+        """
+            This method executes the logic for search button.
+            Given a dataset, a model and a number of files to recover this method displays on search
+            results table the corresponding query result
+        """
+        # set other buttons as not enable
+        self.set_enable_main_window(False)
+
+        # check if dataset is offline or online. There must be exactly one type selected
+
+        # check the model selected
+
+        # make the query from search bar for the given a dataset, a model and an amount of elements to retrieve
+
+        # put the results on the search table and show elapsed time response
+
+        # at the end of the end of the method make buttons enable to users
+        self.set_enable_main_window(True)
+
+    def expand_query_button(self):
+        """
+            This method executes the logic for expand query.
+            When executed, the search bar would be changed to a more
+            specific query expanding the terms used
+        """
+        # set other buttons as not enable
+        self.set_enable_main_window(False)
+
+        # check if search query is valid
+
+        # generate the expanded query string given an initial query string
+
+        # place the generated expanded query on search bar
+
+        # at the end of the end of the method make buttons enable to users
+        self.set_enable_main_window(True)
+
+    def apply_feedback_button(self):
+        """
+            With this method, in case you are using a vector-space-based
+            model, you can execute a search query using a better query
+            vector which gives better metric results
+        """
+        # set other buttons as not enable
+        self.set_enable_main_window(False)
+
+        # check the enabled feedback technique, there must be just one selected method
+
+        # check if selected dataset is valid
+
+        # check if selcted model is valid
+
+        # make query with new query vector and put results on search table
+
+        # at the end of the end of the method make buttons enable to users
+        self.set_enable_main_window(True)
+
+    def calculate_metrics_button(self):
+        """
+            This method calculates the metrics using the
+            values from the spin buttons for RR, REC, REL
+            and RRD.
+        """
+        # set other buttons as not enable
+        self.set_enable_main_window(False)
+
+        # check if spin boxes for main sets are valid
+        RR = self.RRSpinBox.value()
+        REC = self.RECSpinBox.value()
+        REL = self.RELSpinBox.value()
+        RRD = self.RRDSpinBox.value()
+
+        valid_inputs = (RRD <= RR and RR > 0 and REC > 0 and REL > 0 and REC >= RR and REL >= RR)
+
+        # calculate metrics updating the corresponding labels
+        if not valid_inputs:
+            # show error message to user
+            pass
+        
+        else:
+            metrics = self.cranfield_adr.get_metrics(RR, REC, REL, RRD) # get metrics dict
+            print(metrics)
+            # update corresponding labels
+            self.precisionLabel.setText("Precision: {0:.2f}".format(metrics['precision']))
+            self.recallLabel.setText("Recall: {0:.2f}".format(metrics['recall']))
+            self.fscoreLabel.setText("F-Score: {0:.2f}".format(metrics['f_score']))
+            self.f1scoreLabel.setText("F1-Score: {0:.2f}".format(metrics['f1_score']))
+            self.rprecisionLabel.setText("R-Precision: {0:.2f}".format(metrics['r_precision']))
+            self.noveltyRatioLabel.setText("Novelty Ratio: {0:.2f}".format(metrics['novelty_ratio']))
+
+        # at the end of the end of the method make buttons enable to users
+        self.set_enable_main_window(True)
+
+    def set_enable_main_window(self, is_enable):
+        """
+            This method is used for enable and disable the
+            main buttons in the gui by using is_enable bool value
+        """
+        self.ADRGroupBox.setEnabled(is_enable)
+
+
+# if __name__ == "__main__":
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     MainWindow = QtWidgets.QMainWindow()
+#     ui = Ui_MainWindow()
+#     ui.setupUi(MainWindow)
+#     MainWindow.show()
+#     sys.exit(app.exec_())

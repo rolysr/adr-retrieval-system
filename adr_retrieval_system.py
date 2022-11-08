@@ -101,7 +101,7 @@ class AdrRetrievalSystem(RetrievalSystem):
             Calculate metrics inside a dict()
         """
 
-        # Get al metrics values
+        # Get all metrics values
         precision = metrics.precision(RR, REC)
         recall = metrics.recall(RR, REL)
         f_score = metrics.f_score(RR, REL, REC, Beta=1.5)
