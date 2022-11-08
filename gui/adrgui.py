@@ -13,7 +13,7 @@ from adr_retrieval_system import AdrRetrievalSystem
 from retrieval_models.boolean_model.boolean_model import BooleanModel
 from retrieval_models.generalized_vector_space_model.generalized_vector_space_model import GeneralizedVectorSpaceModel
 from retrieval_models.vector_space_model.vector_space_model import VectorSpaceModel
-
+from utils.crawler import Crawler
 from utils.preprocessor import Preprocessor
 
 
@@ -65,6 +65,7 @@ class Ui_MainWindow(object):
         self.responseSizeGroupBox.setObjectName("responseSizeGroupBox")
         self.noDocsSpinBox = QtWidgets.QSpinBox(self.responseSizeGroupBox)
         self.noDocsSpinBox.setGeometry(QtCore.QRect(110, 40, 51, 21))
+        self.noDocsSpinBox.setMinimum(1)
         font = QtGui.QFont()
         font.setFamily("Microsoft Sans Serif")
         font.setPointSize(9)
@@ -96,6 +97,13 @@ class Ui_MainWindow(object):
         self.searchResultsTable.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
         self.searchResultsTable.setHorizontalHeaderItem(2, item)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft Sans Serif")
+        font.setPointSize(9)
+        font.setBold(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        self.searchResultsTable.setFont(font)
         self.responseTimeGroupBox = QtWidgets.QGroupBox(self.ADRGroupBox)
         self.responseTimeGroupBox.setGeometry(QtCore.QRect(620, 240, 171, 71))
         font = QtGui.QFont()
@@ -199,6 +207,7 @@ class Ui_MainWindow(object):
         self.label_3.setObjectName("label_3")
         self.noPagesCrawlerSpinBox = QtWidgets.QSpinBox(self.crawlerGroupBox)
         self.noPagesCrawlerSpinBox.setGeometry(QtCore.QRect(110, 90, 51, 21))
+        self.noPagesCrawlerSpinBox.setMinimum(1)
         font = QtGui.QFont()
         font.setFamily("Microsoft Sans Serif")
         font.setPointSize(9)
@@ -504,13 +513,67 @@ class Ui_MainWindow(object):
         # set other buttons as not enable
         self.set_enable_main_window(False)
 
+        number_of_documents_to_retrieve = self.noDocsSpinBox.value() # number of documents to retrieve
+
+        # check search bar is not empty
+        if self.searchBar.text() == '':
+            QtWidgets.QMessageBox.about(self.searchButton, 'Invalid Query String', 'Invalid query string, cannot be empty')
+            self.set_enable_main_window(True)
+            return
+
+        query_string = self.searchBar.text()
+
         # check if dataset is offline or online. There must be exactly one type selected
+        if (self.offlineRadioButton.isChecked() and self.onlineRadioButton.isChecked()) or (not self.offlineRadioButton.isChecked() and not self.onlineRadioButton.isChecked()):
+            QtWidgets.QMessageBox.about(self.searchButton, 'Invalid Selection', 'Invalid selection between offline and online search')
+            self.clean_dataset_selection()
+            self.set_enable_main_window(True)
+            return
+        
+        adr_system = None # adr system to use
+        # offline dataset case
+        if self.offlineRadioButton.isChecked():
+            dataset_name = self.offlineDatasetsComboBox.currentText()
+            adr_system = self.cranfield_adr if dataset_name == 'Cranfield' else (self.reuters_adr if dataset_name == 'Reuters' else self.newsgroups_adr) # ADR System to use
+
+        # online dataset case (crawler)
+        elif self.onlineRadioButton.isChecked():
+            if self.urlCrawlerLineEdit.text() == '':
+                dataset_url = self.urlCrawlerLineEdit.text()
+                no_pages = self.noPagesCrawlerSpinBox.value()
+
+                try:
+                    online_corpus = Crawler(dataset_url, no_pages).get_documents() # get corpus from online search
+                    online_bm = BooleanModel(online_corpus)
+                    online_vsm = VectorSpaceModel(online_corpus)
+                    adr_system = AdrRetrievalSystem(online_corpus, [online_bm, online_vsm])
+                except:
+                    QtWidgets.QMessageBox.about(self.searchButton, 'Online Search Error', 'Please check if you have permission to that url or if you are connected to the Internet')
+                    self.set_enable_main_window(True)
+                    return
+                    
 
         # check the model selected
+        model_name = self.modelComboBox.currentText().replace(' ', '') # get model name
 
         # make the query from search bar for the given a dataset, a model and an amount of elements to retrieve
+        query_response = None
+        self.searchResultsTable.clearContents()
+        try: # make query
+            query_response = adr_system.k_documents_query_model(query_string, model_name, number_of_documents_to_retrieve)
+            self.searchResultsTable.setRowCount(len(query_response))
+            self.searchResultsTable.setColumnCount(3)
 
-        # put the results on the search table and show elapsed time response
+            # put the results on the search table and show elapsed time response
+            for index in range(number_of_documents_to_retrieve):
+                self.searchResultsTable.setItem(index, 0, QtWidgets.QTableWidgetItem(str(query_response[index][1].id))) # set id
+                self.searchResultsTable.setItem(index, 1, QtWidgets.QTableWidgetItem("{0:.6f}".format(query_response[index][0]))) # set sim
+                self.searchResultsTable.setItem(index, 2, QtWidgets.QTableWidgetItem(str(query_response[index][1].url))) # set url
+
+        except:
+            QtWidgets.QMessageBox.about(self.searchButton, 'Internal Model Error', 'Internal model error')
+            self.searchBar.setText('')
+            self.searchResultsTable.clearContents() # clear all elements
 
         # at the end of the end of the method make buttons enable to users
         self.set_enable_main_window(True)
@@ -573,11 +636,12 @@ class Ui_MainWindow(object):
         # calculate metrics updating the corresponding labels
         if not valid_inputs:
             # show error message to user
-            pass
-        
+            QtWidgets.QMessageBox.about(self.metricsButton, 'Arithmetic Error', 'Possible division by zero or non sense operation')
+            # clean metrics
+            self.clean_metrics()
+
         else:
             metrics = self.cranfield_adr.get_metrics(RR, REC, REL, RRD) # get metrics dict
-            print(metrics)
             # update corresponding labels
             self.precisionLabel.setText("Precision: {0:.2f}".format(metrics['precision']))
             self.recallLabel.setText("Recall: {0:.2f}".format(metrics['recall']))
@@ -595,6 +659,23 @@ class Ui_MainWindow(object):
             main buttons in the gui by using is_enable bool value
         """
         self.ADRGroupBox.setEnabled(is_enable)
+
+    def clean_metrics(self):
+        """
+            This method is used for cleaning all values
+            on metrics group box
+        """
+        self.RRSpinBox.setValue(0)
+        self.RRDSpinBox.setValue(0)
+        self.RECSpinBox.setValue(0)
+        self.RELSpinBox.setValue(0)
+
+    def clean_dataset_selection(self):
+        """
+            Method for cleaning dataset selection
+        """
+        self.offlineRadioButton.setChecked(False)
+        self.onlineRadioButton.setChecked(False)
 
 
 # if __name__ == "__main__":

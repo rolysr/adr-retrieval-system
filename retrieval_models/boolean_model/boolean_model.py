@@ -68,7 +68,7 @@ class BooleanModel(RetrievalModel):
             print("Malformed query or postfix expression")
             return
 
-        return operands.pop()
+        return 1 if operands.pop() == True else 0
 
     def perform_operation(self, left, right, op):
         """Performs specified operation on the vectors

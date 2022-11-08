@@ -5,7 +5,7 @@ class Document:
         Class that represents an abstract document
     """
 
-    def __init__(self, text, url):
+    def __init__(self, text, url=''):
         """Receives a text as necessary data for a document.
         Arguments:
             text {string} -- document main content
