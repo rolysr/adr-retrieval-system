@@ -39,5 +39,5 @@ def query_expansion_by_synonyms(query):
         synonyms = (set(synonyms))
         words.extend(list(synonyms)[:2])
         synonyms = []
-
+    words = [word.replace('_', ' ') for word in words]
     return words

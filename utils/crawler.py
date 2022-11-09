@@ -107,7 +107,7 @@ class Crawler:
 
                 preprocessor = Preprocessor()
                 preprocessor.tokenize(words)
-                documents.append(Document(words), url)
+                documents.append(Document(words, url))
                 pages_to_visit = pages_to_visit + links
             except:
                 print("Failed")

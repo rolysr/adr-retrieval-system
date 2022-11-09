@@ -520,7 +520,7 @@ class Ui_MainWindow(object):
 
         # online dataset case (crawler)
         elif self.onlineRadioButton.isChecked():
-            if self.urlCrawlerLineEdit.text() == '':
+            if self.urlCrawlerLineEdit.text() != '':
                 dataset_url = self.urlCrawlerLineEdit.text()
                 no_pages = self.noPagesCrawlerSpinBox.value()
 
@@ -534,7 +534,6 @@ class Ui_MainWindow(object):
                     self.set_enable_main_window(True)
                     return
                     
-
         # check the model selected
         model_name = self.modelComboBox.currentText().replace(' ', '') # get model name
 
@@ -546,7 +545,7 @@ class Ui_MainWindow(object):
             self.searchResultsTable.setRowCount(len(query_response))
             self.searchResultsTable.setColumnCount(3)
             # put the results on the search table and show elapsed time response
-            for index in range(number_of_documents_to_retrieve):
+            for index in range(len(query_response)):
                 self.searchResultsTable.setItem(index, 0, QtWidgets.QTableWidgetItem(str(query_response[index][1].id))) # set id
                 self.searchResultsTable.setItem(index, 1, QtWidgets.QTableWidgetItem("{0:.6f}".format(query_response[index][0]))) # set sim
                 self.searchResultsTable.setItem(index, 2, QtWidgets.QTableWidgetItem(str(query_response[index][1].url))) # set url
@@ -554,6 +553,7 @@ class Ui_MainWindow(object):
         except:
             QtWidgets.QMessageBox.about(self.searchButton, 'Internal Model Error', 'Internal model error')
             self.searchBar.setText('')
+            self.searchBar.clear()
             self.searchResultsTable.clearContents() # clear all elements
 
         # set end time to elapsed time label
