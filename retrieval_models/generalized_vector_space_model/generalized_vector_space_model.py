@@ -24,7 +24,7 @@ class GeneralizedVectorSpaceModel(RetrievalModel):
 
         self.ki = self.get_ki(corpus)
  
-    def get_ki(self,corpus,d):
+    def get_ki(self,corpus):
         """
         Create a dictionary of key-value pairs where tokens 
         are keys and Ki are the value
@@ -132,8 +132,8 @@ class GeneralizedVectorSpaceModel(RetrievalModel):
         weight = np.zeros(len(self.corpus))
         for i in range(len(self.corpus)):
             if self.corpus[i].text == document.text:
-                for i in self.vocab:
-                    weight = weight + self.wij[i]*self.ki[i]
+                for j in self.vocab:
+                    weight = weight + self.wij[i][j]*self.ki[j]
                 break
         cos_sim = np.dot(weight, q)/(np.linalg.norm(weight)*np.linalg.norm(q))
         return cos_sim
