@@ -3,11 +3,13 @@ from testing.preprocessing_test import *
 from testing.query_expansion_test import *
 from testing.generalized_vector_space_model_test import *
 from testing.vector_space_model_test import *
+from testing.generalized_vector_space_model_test import *
 
 from testing.vector_feedback_test import *
 from testing.crawler_test import *
 from testing.adr_system_test import *
 from testing.metrics_test import *
+
 
 """
 This filed can be used for running the tests corresponding to each
@@ -23,3 +25,4 @@ to run an specific test or you can add your own test file on ./testing folder
 # run_crawler_test()
 # run_adr_system_test()
 # run_metrics_tests()
+run_generalized_vector_space_model_test()
