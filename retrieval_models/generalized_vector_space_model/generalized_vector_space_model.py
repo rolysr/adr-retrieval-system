@@ -11,18 +11,19 @@ class GeneralizedVectorSpaceModel(RetrievalModel):
     """
 
     def __init__(self, corpus) -> None:
+        corpus = list(corpus[0:100]) if len(corpus) > 100 else corpus
         # get the corpus data
-        super().__init__(list(corpus[0:100]), name='GeneralizedVectorSpaceModel')
+        super().__init__(corpus, name='GeneralizedVectorSpaceModel')
 
         # calculate df
-        self.df = self.get_df(list(corpus)[0:100])
+        self.df = self.get_df(corpus)
 
         # create vocabulary list of all unique words
         self.vocab = [term for term in self.df]
 
-        self.wij = self.get_wij(list(corpus[0:100]))
+        self.wij = self.get_wij(corpus)
 
-        self.ki = self.get_ki(list(corpus[0:100]))
+        self.ki = self.get_ki(corpus)
  
     def get_ki(self,corpus):
         """
