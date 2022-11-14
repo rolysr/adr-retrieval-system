@@ -3,7 +3,7 @@ from utils.preprocessor import *
 
 def run_vector_space_model_test():
     # Init preprocessor
-    preprocessor = Preprocessor('./datasets')
+    preprocessor = Preprocessor('./datasets/cranfield')
 
     # Get all corpus
     corpus = preprocessor.generate_preprocessed_documents()

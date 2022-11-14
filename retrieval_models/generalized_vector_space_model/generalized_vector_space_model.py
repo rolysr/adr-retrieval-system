@@ -1,7 +1,7 @@
 from collections import Counter
-from retrieval_models.vector_space_model.vector_space_document import VectorSpaceDocument
+from retrieval_models.generalized_vector_space_model.generalized_vector_space_document import GeneralizedVectorSpaceDocument
+from retrieval_models.generalized_vector_space_model.generalized_vector_space_query import GeneralizedVectorSpaceQuery
 from base_models.retrieval_model import RetrievalModel
-from retrieval_models.vector_space_model.vector_space_query import VectorSpaceQuery
 import numpy as np
 import math
 
@@ -12,17 +12,17 @@ class GeneralizedVectorSpaceModel(RetrievalModel):
 
     def __init__(self, corpus) -> None:
         # get the corpus data
-        super().__init__(corpus, name='GeneralizedVectorSpaceModel')
+        super().__init__(list(corpus[0:100]), name='GeneralizedVectorSpaceModel')
 
         # calculate df
-        self.df = self.get_df(corpus)
+        self.df = self.get_df(list(corpus)[0:100])
 
         # create vocabulary list of all unique words
         self.vocab = [term for term in self.df]
 
-        self.wij = self.get_wij(corpus)
+        self.wij = self.get_wij(list(corpus[0:100]))
 
-        self.ki = self.get_ki(corpus)
+        self.ki = self.get_ki(list(corpus[0:100]))
  
     def get_ki(self,corpus):
         """
@@ -36,9 +36,10 @@ class GeneralizedVectorSpaceModel(RetrievalModel):
         ki = {}
 
         dictionary_mr = self.get_mr(corpus)
-        mr = dictionary_mr.values()
+        mr = list(dictionary_mr.values())
         
         for i in range(len(self.vocab)):
+            #sprint("i={}".format(i))
             numerator = np.zeros(len(self.vocab))
             denominator = 0
             for j in range(len(mr)):
@@ -46,9 +47,8 @@ class GeneralizedVectorSpaceModel(RetrievalModel):
                     cir = self.calculate_cir(dictionary_mr,mr[j],i)
                     numerator = numerator + cir*mr[j]
                     denominator = denominator + cir**2
-            for i in range(len(numerator)):
-                numerator[i] = numerator[i]/math.sqrt(denominator)
-            ki[self.vocab[i]].add(numerator)
+            numerator = numerator/math.sqrt(denominator) if denominator > 0 else np.zeros(len(self.vocab))
+            ki[self.vocab[i]] = numerator
 
         return ki
 
@@ -57,10 +57,14 @@ class GeneralizedVectorSpaceModel(RetrievalModel):
         """
         Calculate Ci,r if gl(dj)==gl(Mr) for all l
         """
+        cir = 0
         for i in range(len(self.corpus)):
-            cir = 0
-            if dictionary_mr[i] == mr:
+
+            if np.array_equal(dictionary_mr[i],mr):
+                #print("Entre aqui ",dictionary_mr[i])
                 cir = cir + self.wij[i][index]
+        #if cir==0:
+         #   print(mr,index)
         return cir
 
     def get_mr(self, corpus):
@@ -80,8 +84,8 @@ class GeneralizedVectorSpaceModel(RetrievalModel):
             for j in range(len(self.vocab)):
                 if self.vocab[j] in corpus[i].text.split():
                     aux[j] = 1
-            mr[i].add(aux)
-        
+            mr[i] = aux
+
         return mr 
 
     def get_wij(self,corpus):
@@ -93,6 +97,8 @@ class GeneralizedVectorSpaceModel(RetrievalModel):
         
         for i in range(len(corpus)):
             wij[i] = self.parse_document(corpus[i].text).document_vector
+        
+        return wij
 
     def get_df(self, corpus):
         """
@@ -122,20 +128,22 @@ class GeneralizedVectorSpaceModel(RetrievalModel):
         return df
 
     def parse_query(self, query):
-        return VectorSpaceQuery(query, self.vocab, len(self.corpus), self.df)
+        return GeneralizedVectorSpaceQuery(query, self.vocab, len(self.corpus), self.df)
 
     def parse_document(self, document):
-        return VectorSpaceDocument(document, len(self.corpus), self.df, self.vocab)
+        return GeneralizedVectorSpaceDocument(document, len(self.corpus), self.df, self.vocab)
 
-    def sim(self, document : VectorSpaceDocument, query : VectorSpaceQuery):
+    def sim(self, document : GeneralizedVectorSpaceDocument, query : GeneralizedVectorSpaceQuery):
         q = query.query_vector
-        weight = np.zeros(len(self.corpus))
+        weight = np.zeros(len(self.vocab))
+        q_weight= np.zeros(len(self.vocab))
         for i in range(len(self.corpus)):
             if self.corpus[i].text == document.text:
-                for j in self.vocab:
-                    weight = weight + self.wij[i][j]*self.ki[j]
+                for j in range(len(self.vocab)):
+                    weight = weight + self.wij[i][j]*self.ki[self.vocab[j]]
+                    q_weight = q_weight + q[j]*self.ki[self.vocab[j]]
                 break
-        cos_sim = np.dot(weight, q)/(np.linalg.norm(weight)*np.linalg.norm(q))
+        cos_sim = np.dot(weight, q_weight)/(np.linalg.norm(weight)*np.linalg.norm(q_weight))
         return cos_sim
 
     

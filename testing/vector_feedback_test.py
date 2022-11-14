@@ -3,7 +3,7 @@ from retrieval_models.vector_space_model.vector_space_model import VectorSpaceMo
 from utils.preprocessor import Preprocessor
 
 def run_vector_feedback_test():
-    corpus = Preprocessor('./datasets').generate_preprocessed_documents()
+    corpus = Preprocessor('./datasets/cranfield').generate_preprocessed_documents()
     vsm = VectorSpaceModel(corpus)
 
     doc = corpus[0].text
