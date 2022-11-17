@@ -464,23 +464,23 @@ class Ui_MainWindow(object):
         # cranfield
         bm_cranfield = BooleanModel(cranfield_corpus)
         vsm_cranfield = VectorSpaceModel(cranfield_corpus)
-        # gvsm_cranfield = GeneralizedVectorSpaceModel(cranfield_corpus)
+        gvsm_cranfield = GeneralizedVectorSpaceModel(cranfield_corpus)
         # cranfield adr
-        self.cranfield_adr = AdrRetrievalSystem(cranfield_corpus, models=[bm_cranfield, vsm_cranfield])
+        self.cranfield_adr = AdrRetrievalSystem(cranfield_corpus, models=[bm_cranfield, vsm_cranfield, gvsm_cranfield])
 
         # reuters
         bm_reuters = BooleanModel(reuters_corpus)
         vsm_reuters = VectorSpaceModel(reuters_corpus)
-        # gvsm_reuters = GeneralizedVectorSpaceModel(reuters_corpus)
+        gvsm_reuters = GeneralizedVectorSpaceModel(reuters_corpus)
         # reuters adr
-        self.reuters_adr = AdrRetrievalSystem(reuters_corpus, models=[bm_reuters, vsm_reuters])
+        self.reuters_adr = AdrRetrievalSystem(reuters_corpus, models=[bm_reuters, vsm_reuters, gvsm_reuters])
 
         # newsgroups
         bm_newsgroups = BooleanModel(newsgroups_corpus)
         vsm_newsgroups = VectorSpaceModel(newsgroups_corpus)
-        # gvsm_newsgroups = GeneralizedVectorSpaceModel(newsgroups_corpus)
+        gvsm_newsgroups = GeneralizedVectorSpaceModel(newsgroups_corpus)
         # newsgroups adr
-        self.newsgroups_adr = AdrRetrievalSystem(newsgroups_corpus, models=[bm_newsgroups, vsm_newsgroups])
+        self.newsgroups_adr = AdrRetrievalSystem(newsgroups_corpus, models=[bm_newsgroups, vsm_newsgroups, gvsm_newsgroups])
 
     def search_button(self):
         """
@@ -528,7 +528,8 @@ class Ui_MainWindow(object):
                     online_corpus = Crawler(dataset_url, no_pages).get_documents() # get corpus from online search
                     online_bm = BooleanModel(online_corpus)
                     online_vsm = VectorSpaceModel(online_corpus)
-                    adr_system = AdrRetrievalSystem(online_corpus, [online_bm, online_vsm])
+                    online_gvsm = GeneralizedVectorSpaceModel(online_corpus)
+                    adr_system = AdrRetrievalSystem(online_corpus, [online_bm, online_vsm, online_gvsm])
                 except:
                     QtWidgets.QMessageBox.about(self.searchButton, 'Online Search Error', 'Please check if you have permission to that url or if you are connected to the Internet')
                     self.set_enable_main_window(True)
