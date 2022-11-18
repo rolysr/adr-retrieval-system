@@ -42,4 +42,5 @@ class RetrievalSystem:
         query_response.sort()
         query_response.reverse()
         query_response = [response for response in query_response if str(response[0]) != "nan"]
+        
         return query_response
