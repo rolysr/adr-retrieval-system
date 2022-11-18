@@ -8,7 +8,7 @@ def run_generalized_vector_space_model_test():
     # Get all corpus
     corpus = preprocessor.generate_preprocessed_documents()
 
-    # Init boolean model
+    # Init generalized vector space model
     vsm = GeneralizedVectorSpaceModel(corpus)
 
     # Make a query for a document
