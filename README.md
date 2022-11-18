@@ -11,7 +11,7 @@
  
  ### Online Datasets
  ---
- Data sets from the Internet can be used thanks to the crawling methods implemented. It is only necessary to specify a seed url and a number of pages to be searched and the [crawler](https://github.com/rolysr/adr-retrieval-system/blob/main/utils/crawler.py) will return a document referring to the content of the pages analyzed.
+ Data sets from the Internet can be used thanks to the crawling methods implemented. It is only necessary to specify a seed url and a number of pages to be searched and the [crawler](https://github.com/rolysr/adr-retrieval-system/blob/main/utils/crawler.py) will return a list of documents referring to the content of the pages analyzed.
  
  ## Requirements
   For the correct operation of the project, it is recommended to have the [Anaconda](https://www.anaconda.com/) framework installed, which includes the Numpy, Scipy and NLTK libraries.
@@ -23,6 +23,7 @@
    - Scipy
    - uuid (A Python library for generating unique identifiers)
    - PyQt5 (Python library for front-end app to run)
+   
 All  those dependencies can be installed by using classic Python *pip* command.
 
 ### NLTK Data
@@ -59,7 +60,7 @@ preprocessor = Preprocessor('./datasets/cranfield')
 # Get all corpus
 corpus = preprocessor.generate_preprocessed_documents()
 
-# Init boolean model
+# Init vector space model
 vsm = VectorSpaceModel(corpus)
 
 # Make a query for a document
@@ -71,6 +72,7 @@ d = vsm.parse_document(doc)
 q = vsm.parse_query(query)
 
 s = vsm.sim(d, q)
+
 print(s) # prints the similarity for the given query and document
 ```
 The most recommended way to use the models is from the adr system which is a class that allows us to initialize several models at the same time with a given corpus and allows us to perform a series of basic queries.
@@ -110,7 +112,6 @@ query_response = adr.query_model_name(query, "GeneralizedVectorSpaceModel")
 # Test query k items on the response (gvsm)
 query = "A wing is good"
 query_response = adr.k_documents_query_model(query, "GeneralizedVectorSpaceModel")
-
 
 print(query_response)
 ```
