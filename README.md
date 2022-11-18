@@ -11,7 +11,7 @@
  
  ### Online Datasets
  ---
- Data sets from the Internet can be used thanks to the crawling methods implemented. It is only necessary to specify a seed url and a number of pages to be searched and the [crawler](https://github.com/rolysr/adr-retrieval-system/blob/main/utils/crawler.py) will return a document referring to the content of the pages analyzed.
+ Data sets from the Internet can be used thanks to the crawling methods implemented. It is only necessary to specify a seed url and a number of pages to be searched and the [crawler](https://github.com/rolysr/adr-retrieval-system/blob/main/utils/crawler.py) will return a list of documents referring to the content of the pages analyzed.
  
  ## Requirements
   For the correct operation of the project, it is recommended to have the [Anaconda](https://www.anaconda.com/) framework installed, which includes the Numpy, Scipy and NLTK libraries.
