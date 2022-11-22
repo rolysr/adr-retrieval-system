@@ -646,6 +646,13 @@ class Ui_MainWindow(object):
         self.RECSpinBox.setValue(0)
         self.RELSpinBox.setValue(0)
 
+        self.precisionLabel.setText("Precision:")
+        self.recallLabel.setText("Recall:")
+        self.fscoreLabel.setText("F-Score:")
+        self.f1scoreLabel.setText("F1-Score:")
+        self.rprecisionLabel.setText("R-Precision:")
+        self.noveltyRatioLabel.setText("Novelty Ratio:")
+
     def clean_dataset_selection(self):
         """
             Method for cleaning dataset selection
