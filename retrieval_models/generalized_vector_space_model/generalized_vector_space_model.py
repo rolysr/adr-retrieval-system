@@ -144,7 +144,7 @@ class GeneralizedVectorSpaceModel(RetrievalModel):
                     weight = weight + self.wij[i][j]*self.ki[self.vocab[j]]
                     q_weight = q_weight + q[j]*self.ki[self.vocab[j]]
                 break
-        cos_sim = np.dot(weight, q_weight)/(np.linalg.norm(weight)*np.linalg.norm(q_weight))
+        cos_sim = np.dot(weight, q_weight)/(np.linalg.norm(weight)*np.linalg.norm(q_weight)) if np.linalg.norm(weight)*np.linalg.norm(q_weight) !=0 else 0
         return cos_sim
 
     
