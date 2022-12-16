@@ -1,4 +1,4 @@
-Trec Covid, search space
+Cranfield, search space
 Response 20, recovered documents
 GeneralizedVectorSpaceModel
 Acuracy
